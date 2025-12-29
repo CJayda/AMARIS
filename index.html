@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMARIS | AI Sanctuary</title>
+    
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3258/3258505.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,600&family=Inter:wght@200;400;500&family=Dancing+Script&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --rose: #e5989b;
+            --ink: #354f52;
+            --glass: rgba(255, 255, 255, 0.78);
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            color: var(--ink);
+        }
+
+        /* 10 Image Background Rotation */
+        #bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            transition: 3s ease-in-out;
+            filter: brightness(0.8);
+        }
+
+        /* Auth & App Screens */
+        #auth-screen, #main-app {
+            position: absolute;
+            top: 0; left: 0; width: 100%; min-height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            padding: 40px 0;
+        }
+
+        #auth-screen { background: rgba(255, 245, 245, 0.3); z-index: 100; backdrop-filter: blur(15px); }
+        #main-app { display: none; flex-direction: column; }
+
+        /* Stylish Card */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 40px;
+            border-radius: 60px 15px 60px 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 30px;
+        }
+
+        h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin: 0; font-style: italic; letter-spacing: 4px; text-align: center; }
+
+        /* Writing Template */
+        textarea {
+            width: 100%;
+            height: 300px;
+            background: repeating-linear-gradient(transparent, transparent 31px, rgba(181, 131, 141, 0.1) 31px, rgba(181, 131, 141, 0.1) 32px);
+            border: none;
+            line-height: 32px;
+            padding: 10px;
+            font-size: 1.15rem;
+            color: var(--ink);
+            outline: none;
+            resize: none;
+            margin-top: 20px;
+        }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        button {
+            padding: 12px 20px; border-radius: 15px; border: 1px solid var(--rose);
+            background: white; color: var(--rose); cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 0.7rem; flex: 1;
+        }
+        button:hover { background: var(--rose); color: white; }
+
+        /* Manifestation Gallery */
+        .gallery-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 20px 0; text-align: center; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        .vision-item { width: 100%; height: 150px; border-radius: 15px; object-fit: cover; border: 2px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* Controls */
+        #music-toggle { position: fixed; top: 20px; right: 20px; background: white; border: none; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; font-size: 1.5rem; z-index: 200; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .ai-label { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #b5838d; text-align: center; margin-top: 20px; min-height: 40px; }
+        .input-field { border: none; border-bottom: 1px solid var(--rose); background: transparent; padding: 12px; width: 100%; margin-bottom: 20px; text-align: center; font-size: 1rem; }
+    </style>
+</head>
+<body onload="initBackground()">
+
+    <div id="bg-overlay"></div>
+
+    <audio id="zen-audio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="auth-screen">
+        <div class="glass-card" style="max-width: 400px; text-align: center;">
+            <h1>Amaris</h1>
+            <p style="font-size: 0.7rem; letter-spacing: 3px; color: #888; margin-bottom: 30px;">AI SANCTUARY</p>
+            <input type="text" id="username" class="input-field" placeholder="Username">
+            <input type="password" id="password" class="input-field" placeholder="Password">
+            <button onclick="handleAuth()">Enter Sanctuary</button>
+        </div>
+    </div>
+
+    <div id="main-app">
+        <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+        
+        <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <h1>Amaris</h1>
+                <span id="date-now" style="font-size: 0.8rem; color: #999;"></span>
+            </div>
+            <textarea id="entry" placeholder="Pour your thoughts into the lines..."></textarea>
+            <div class="btn-group">
+                <button onclick="saveThought()">💾 Save</button>
+                <button onclick="aiInsight()">✨ AI Insight</button>
+                <button onclick="downloadDiary()">📥 Export</button>
+                <button onclick="location.reload()">🔒 Logout</button>
+            </div>
+            <div id="ai-response" class="ai-label"></div>
+        </div>
+
+        <div class="glass-card">
+            <div class="gallery-title">Manifestation Gallery</div>
+            <p style="text-align: center; font-size: 0.8rem; color: #888;">Add image URLs of your dreams and goals</p>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="vision-url" class="input-field" style="margin: 0;" placeholder="Paste Image URL here...">
+                <button onclick="addVision()" style="flex: 0;">Add</button>
+            </div>
+            <div id="gallery" class="gallery-grid">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. DYNAMIC BACKGROUNDS (10)
+        const images = [
+            'https://images.unsplash.com/photo-1516961642265-531546e84af2',
+            'https://images.unsplash.com/photo-1490750967868-88aa4486c946',
+            'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc',
+            'https://images.unsplash.com/photo-1476610182048-b716b8518aae',
+            'https://images.unsplash.com/photo-1519751138087-5bf79df62d5b',
+            'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+            'https://images.unsplash.com/photo-1502082553048-f009c37129b9',
+            'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17',
+            'https://images.unsplash.com/photo-1550684848-fac1c5b4e853',
+            'https://images.unsplash.com/photo-1506744038136-46273834b3fb'
+        ];
+        
+        let imgIndex = 0;
+        function initBackground() {
+            const bg = document.getElementById('bg-overlay');
+            const change = () => {
+                bg.style.backgroundImage = `url('${images[imgIndex]}?auto=format&fit=crop&w=1600&q=80')`;
+                imgIndex = (imgIndex + 1) % images.length;
+            };
+            change();
+            setInterval(change, 12000);
+            document.getElementById('date-now').innerText = new Date().toDateString();
+        }
+
+        // 2. ZEN MUSIC
+        let isPlaying = false;
+        function toggleMusic() {
+            const audio = document.getElementById('zen-audio');
+            const btn = document.getElementById('music-toggle');
+            isPlaying ? audio.pause() : audio.play();
+            btn.innerText = isPlaying ? "🎵" : "⏸️";
+            isPlaying = !isPlaying;
+        }
+
+        // 3. AUTH & LOAD
+        let currentUser = null;
+        function handleAuth() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            if (user && pass) {
+                currentUser = user;
+                let data = JSON.parse(localStorage.getItem(user)) || { password: pass, thoughts: "", vision: [] };
+                if (data.password === pass) {
+                    localStorage.setItem(user, JSON.stringify(data));
+                    loadApp(data);
+                } else alert("Wrong password.");
+            }
+        }
+
+        function loadApp(data) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('entry').value = data.thoughts;
+            data.vision.forEach(url => renderVision(url));
+        }
+
+        // 4. SAVE & AI
+        function saveThought() {
+            let data = JSON.parse(localStorage.getItem(currentUser));
+            data.thoughts = document.getElementById('entry').value;
+            localStorage.setItem(currentUser, JSON.stringify(data));
+            document.getElementById('ai-response').innerText = "Safe in the stars...";
+        }
+
+        function aiInsight() {
+            const text = document.getElementById('entry').value.toLowerCase();
+            const response = document.getElementById('ai-response');
+            let msg = "I'm listening. Speak your truth.";
+            if (text.length > 15) {
+                if(text.includes("dream") || text.includes("future")) msg = "Your dreams are the blueprint of your reality.";
+                else if(text.includes("sad") || text.includes("tired")) msg = "It's okay to bloom slowly. Rest is productive.";
+                else msg = "There is such beauty in your perspective.";
+            }
+            response.innerText = ""; let i = 0;
+            const type = () => { if (i < msg.length) { response.innerText += msg.charAt(i); i++; setTimeout(type, 50); } };
+            type();
+        }
+
+        // 5. GALLERY LOGIC
+        function addVision() {
+            const url = document.getElementById('vision-url').value;
+            if (url) {
+                let data = JSON.parse(localStorage.getItem(currentUser));
+                data.vision.push(url);
+                localStorage.setItem(currentUser, JSON.stringify(data));
+                renderVision(url);
+                document.getElementById('vision-url').value = "";
+            }
+        }
+
+        function renderVision(url) {
+            const img = document.createElement('img');
+            img.src = url;
+            img.className = 'vision-item';
+            document.getElementById('gallery').appendChild(img);
+        }
+
+        // 6. EXPORT
+        function downloadDiary() {
+            const text = document.getElementById('entry').value;
+            const blob = new Blob([`AMARIS\n${new Date()}\n\n${text}`], {type: 'text/plain'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `Amaris_Journal.txt`;
+            a.click();
+        }
+    </script>
+</body>
+</html>
