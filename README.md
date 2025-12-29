@@ -1,2 +1,2 @@
 # AMARIS
-✨ AMARIS: A sophisticated, AI-enhanced digital sanctuary for mindful journaling. Built with a glassmorphism aesthetic, featuring 10 dynamic backgrounds, Zen lo-fi integration, and localized secure storage for private reflections.  
+AMARIS — A bespoke digital sanctuary for the modern mind. Built on a foundation of elegance and privacy, Amaris allows you to archive your journey through an AI-enhanced lens. A Chantel Jayda production.
