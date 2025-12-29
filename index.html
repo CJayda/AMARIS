@@ -5,227 +5,208 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMARIS by Chantel Jayda</title>
     
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3258/3258505.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,600&family=Inter:wght@200;400;500;600&family=Dancing+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,600&family=Inter:wght@200;400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root { 
-            --rose: #e5989b; 
-            --rose-dark: #b5838d;
-            --ink: #354f52; 
-            --glass: rgba(255, 255, 255, 0.92);
-            --shadow: 0 20px 60px rgba(0,0,0,0.12);
+            --primary: #94a3b8; 
+            --accent: #475569;
+            --ink: #1e293b; 
+            --glass: rgba(255, 255, 255, 0.95);
+            --bg-url: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80');
         }
 
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; overflow-x: hidden; color: var(--ink); scroll-behavior: smooth; }
+        /* NEW Gentleman Aesthetic: Soft Blue & Grey (Lighter) */
+        .theme-male {
+            --primary: #64748b; 
+            --accent: #334155;  
+            --ink: #1e293b;
+            --glass: rgba(241, 245, 249, 0.96);
+        }
+
+        /* Lady Aesthetic: Silk & Champagne */
+        .theme-female {
+            --primary: #d4a373; 
+            --accent: #b5838d;  
+            --ink: #432818;
+            --glass: rgba(255, 250, 250, 0.96);
+        }
+
+        /* Obsidian: Minimalist Dark */
+        .theme-obsidian {
+            --primary: #9ca3af; 
+            --accent: #f9fafb;  
+            --ink: #f9fafb;
+            --glass: rgba(17, 24, 39, 0.9);
+        }
+
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; overflow: hidden; color: var(--ink); transition: 0.8s ease; }
         
-        #bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: -1; transition: 3s ease-in-out; filter: brightness(0.75); }
+        #bg-layer { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--bg-url) no-repeat center center/cover; 
+            z-index: -1; filter: brightness(0.7); transition: 1.5s;
+        }
         
         #notification-box {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 1000; display: none; padding: 15px 30px;
-            background: rgba(181, 131, 141, 0.95); color: white;
-            backdrop-filter: blur(10px); border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            font-size: 0.9rem; font-weight: 500; letter-spacing: 1px;
-            animation: slideDown 0.5s ease forwards;
+            z-index: 1000; display: none; padding: 12px 25px;
+            background: var(--accent); color: white; border-radius: 50px; font-size: 0.85rem;
         }
 
-        @keyframes slideDown { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
-
-        #auth-screen, #main-app { position: absolute; top: 0; left: 0; width: 100%; min-height: 100%; display: flex; justify-content: center; align-items: center; padding: 40px 0; }
-        #auth-screen { background: rgba(0,0,0,0.1); z-index: 100; backdrop-filter: blur(25px); }
-        #main-app { display: none; flex-direction: column; gap: 40px; }
+        #auth-screen, #main-app { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        #main-app { display: none; flex-direction: column; overflow-y: auto; padding: 50px 0; }
 
         .glass-card { 
             background: var(--glass); 
-            backdrop-filter: blur(40px); 
-            padding: 50px; 
-            border-radius: 60px 15px 60px 15px; 
-            box-shadow: var(--shadow); 
-            width: 90%; max-width: 850px; 
-            border: 1px solid rgba(255, 255, 255, 0.5); 
+            backdrop-filter: blur(20px); 
+            padding: 40px; border-radius: 35px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
+            width: 90%; max-width: 450px; 
+            text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
-        h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; margin: 0; font-style: italic; letter-spacing: 4px; text-align: center; }
-        .owner-tag { font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; color: var(--rose-dark); margin-top: -10px; font-weight: 700; display: block; }
 
-        #music-container {
-            position: fixed; bottom: 30px; right: 30px;
-            background: white; width: 65px; height: 65px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; z-index: 200; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Expanded Dashboard Card */
+        .dashboard-card { max-width: 800px; text-align: left; }
+
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; letter-spacing: 3px; color: var(--accent); }
+        .tagline { font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; opacity: 0.6; margin-bottom: 30px; }
+
+        input, select { 
+            width: 100%; padding: 15px; margin-bottom: 20px; border: none; 
+            border-bottom: 1px solid var(--primary); background: transparent; 
+            color: var(--ink); text-align: center; box-sizing: border-box; outline: none;
         }
-        #music-container:hover { transform: scale(1.1); }
-        .wave-bar { width: 4px; height: 15px; background: var(--rose); margin: 0 2px; border-radius: 10px; transition: 0.3s; }
-        .playing .wave-bar { animation: pulse 1s ease-in-out infinite; }
-        .playing .wave-bar:nth-child(2) { animation-delay: 0.2s; }
-        .playing .wave-bar:nth-child(3) { animation-delay: 0.4s; }
 
-        @keyframes pulse { 0%, 100% { height: 10px; } 50% { height: 25px; } }
+        button { 
+            width: 100%; padding: 15px; border-radius: 50px; border: 1px solid var(--primary); 
+            background: transparent; color: var(--primary); cursor: pointer; 
+            transition: 0.3s; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+        }
+        button:hover { background: var(--primary); color: white; }
 
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; margin-top: 30px; }
-        .note-card { background: white; padding: 20px; border-radius: 20px; border: 1px solid rgba(229, 152, 155, 0.2); transition: 0.4s ease; cursor: pointer; }
-        .note-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        #music-btn {
+            position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
+            background: var(--glass); border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; cursor: pointer; z-index: 100; border: 1px solid var(--primary);
+        }
+        .bar { width: 3px; height: 15px; background: var(--primary); margin: 0 2px; transition: 0.3s; }
+        .playing .bar { animation: wave 1s infinite alternate; }
+        @keyframes wave { from { height: 5px; } to { height: 20px; } }
 
-        textarea { width: 100%; height: 350px; background: repeating-linear-gradient(transparent, transparent 31px, rgba(181, 131, 141, 0.08) 31px, rgba(181, 131, 141, 0.08) 32px); border: none; line-height: 32px; padding: 10px; font-size: 1.15rem; color: var(--ink); outline: none; resize: none; margin-top: 20px; }
-        
-        .input-field { border: none; border-bottom: 2px solid rgba(229, 152, 155, 0.3); background: transparent; padding: 14px; width: 100%; margin-bottom: 20px; text-align: center; font-size: 1rem; color: var(--ink); }
-        button { padding: 14px 24px; border-radius: 50px; border: 1px solid var(--rose); background: white; color: var(--rose); cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; font-weight: 700; }
-        button:hover { background: var(--rose); color: white; }
-
-        .ai-label { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: var(--rose-dark); text-align: center; margin-top: 30px; }
+        .note-item { background: rgba(0,0,0,0.03); padding: 15px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--primary); }
+        textarea { width: 100%; height: 150px; background: transparent; border: 1px solid var(--primary); border-radius: 15px; padding: 15px; color: var(--ink); box-sizing: border-box; margin-top: 20px; }
     </style>
 </head>
-<body onload="initBackground()">
+<body>
 
-    <div id="bg-overlay"></div>
+    <div id="bg-layer"></div>
     <div id="notification-box"></div>
-    <audio id="zen-audio" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-music" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
+
+    <div id="music-btn" onclick="toggleMusic()">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
 
     <div id="auth-screen">
-        <div class="glass-card" style="max-width: 420px; text-align: center;">
+        <div class="glass-card">
             <h1>Amaris</h1>
-            <span class="owner-tag">By Chantel Jayda</span>
-            <p id="auth-desc" style="font-size: 0.8rem; letter-spacing: 3px; color: #888; margin-top: 25px; margin-bottom: 35px; font-weight: 500; font-style: italic;">UNVEIL YOUR INNER WORLD</p>
+            <div class="tagline">By Chantel Jayda</div>
             
-            <input type="text" id="username" class="input-field" placeholder="Username">
-            <input type="password" id="password" class="input-field" placeholder="Password">
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
             
             <div id="signup-fields" style="display: none;">
-                <input type="email" id="recovery-email" class="input-field" placeholder="Recovery Email">
-                <input type="text" id="security-hint" class="input-field" placeholder="Password Hint">
+                <select id="gender-select">
+                    <option value="" disabled selected>Aesthetic Preference</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="obsidian">Obsidian</option>
+                </select>
             </div>
 
-            <button id="auth-btn" style="width: 100%;" onclick="handleAuth()">Step Inside</button>
-            <span class="toggle-text" style="cursor:pointer; color:var(--rose-dark); font-size:0.8rem; margin-top:20px; display:block;" onclick="toggleAuthMode()">New here? Create your sanctuary</span>
+            <button onclick="handleAuth()" id="main-btn">Step Inside</button>
+            <p style="font-size: 0.75rem; margin-top: 20px; cursor: pointer; color: var(--primary)" onclick="toggleMode()">Create a new sanctuary</p>
         </div>
     </div>
 
     <div id="main-app">
-        <div id="music-container" onclick="toggleMusic()">
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-        </div>
-
-        <div class="glass-card">
-            <h1 style="font-size:3rem; text-transform: uppercase; color: var(--rose-dark);" id="welcome-banner">WELCOME</h1>
-            <p style="text-align:center; font-style:italic; color: #888;">A Chantel Jayda Production</p>
+        <div class="glass-card dashboard-card">
+            <h1 id="greet">Welcome</h1>
+            <p class="tagline">Your Private Archive</p>
             
-            <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 40px;">
-                <h2 style="font-family:'Playfair Display'; margin:0; font-style: italic;">Archive</h2>
-                <button onclick="document.getElementById('editor-section').scrollIntoView({behavior:'smooth'})">New Thought +</button>
-            </div>
+            <div id="notes-list" style="margin: 20px 0;"></div>
             
-            <div id="dashboard-notes" class="dashboard-grid"></div>
-        </div>
-
-        <div class="glass-card" id="editor-section">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 style="margin:0; font-size: 2.2rem;">Compose</h1>
-                <span id="date-now" style="font-size: 0.9rem; color: var(--rose-dark); font-weight: 600;"></span>
-            </div>
-            <textarea id="entry" placeholder="What is your soul saying today?"></textarea>
-            <div class="btn-group" style="display:flex; gap:10px; margin-top:20px;">
-                <button onclick="saveNote()" style="flex:2;">💾 Archive Note</button>
-                <button onclick="aiInsight()" style="flex:1;">✨ AI Insight</button>
-                <button onclick="location.reload()" style="border:none; color: #888; flex: 0.5;">Logout</button>
-            </div>
-            <div id="ai-response" class="ai-label"></div>
+            <textarea id="note-input" placeholder="What's on your mind?"></textarea>
+            <button onclick="saveNote()" style="margin-top: 15px;">Archive Memory</button>
+            <button onclick="location.reload()" style="margin-top: 10px; border: none; font-size: 0.6rem; opacity: 0.5;">Logout</button>
         </div>
     </div>
 
     <script>
-        const images = ['https://images.unsplash.com/photo-1516961642265-531546e84af2','https://images.unsplash.com/photo-1490750967868-88aa4486c946','https://images.unsplash.com/photo-1518531933037-91b2f5f229cc','https://images.unsplash.com/photo-1476610182048-b716b8518aae','https://images.unsplash.com/photo-1519751138087-5bf79df62d5b','https://images.unsplash.com/photo-1464822759023-fed622ff2c3b','https://images.unsplash.com/photo-1502082553048-f009c37129b9','https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17','https://images.unsplash.com/photo-1550684848-fac1c5b4e853','https://images.unsplash.com/photo-1506744038136-46273834b3fb'];
-        let imgIndex = 0, isLoginMode = true, currentUser = null;
+        let isLogin = true;
 
-        function notify(msg) {
-            const box = document.getElementById('notification-box');
-            box.innerText = msg; box.style.display = 'block';
-            setTimeout(() => { box.style.display = 'none'; }, 4000);
-        }
-
-        function initBackground() {
-            const bg = document.getElementById('bg-overlay');
-            const change = () => { bg.style.backgroundImage = `url('${images[imgIndex]}?auto=format&fit=crop&w=1600&q=80')`; imgIndex = (imgIndex + 1) % images.length; };
-            change(); setInterval(change, 12000);
-            document.getElementById('date-now').innerText = new Date().toDateString();
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('auth-desc').innerText = isLoginMode ? "UNVEIL YOUR INNER WORLD" : "BEGIN YOUR JOURNEY";
-            document.getElementById('signup-fields').style.display = isLoginMode ? "none" : "block";
-            document.getElementById('auth-btn').innerText = isLoginMode ? "Step Inside" : "Create Sanctuary";
+        function toggleMode() {
+            isLogin = !isLogin;
+            document.getElementById('signup-fields').style.display = isLogin ? 'none' : 'block';
+            document.getElementById('main-btn').innerText = isLogin ? 'Step Inside' : 'Create Profile';
         }
 
         function handleAuth() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-            if (!user || !pass) return notify("Fields cannot be empty.");
-            let data = JSON.parse(localStorage.getItem(user));
-            if (isLoginMode) {
-                if (data && data.password === pass) { currentUser = user; loadApp(data); }
-                else notify("The door remains locked. Check your details.");
+            const u = document.getElementById('username').value.toLowerCase();
+            const p = document.getElementById('password').value;
+            const g = document.getElementById('gender-select').value;
+
+            if(!u || !p) return alert("Fill all fields");
+
+            if(isLogin) {
+                let data = JSON.parse(localStorage.getItem(u));
+                if(data && data.pass === p) launch(u, data);
+                else alert("Invalid Login");
             } else {
-                if (data) notify("This name has already been claimed.");
-                else {
-                    currentUser = user;
-                    localStorage.setItem(user, JSON.stringify({ password: pass, notes: [] }));
-                    loadApp({ notes: [] });
-                }
+                if(!g) return alert("Pick an aesthetic");
+                let data = { pass: p, gender: g, notes: [] };
+                localStorage.setItem(u, JSON.stringify(data));
+                launch(u, data);
             }
         }
 
-        function loadApp(data) {
+        function launch(name, data) {
+            document.body.className = 'theme-' + data.gender;
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
-            document.getElementById('welcome-banner').innerText = `WELCOME, ${currentUser}`;
-            refreshDashboard();
-            notify(`Welcome, ${currentUser}. Amaris is listening.`);
+            document.getElementById('greet').innerText = "Welcome, " + name;
+            renderNotes(name);
         }
 
-        function refreshDashboard() {
-            const data = JSON.parse(localStorage.getItem(currentUser));
-            const container = document.getElementById('dashboard-notes');
-            container.innerHTML = data.notes.length ? "" : "<p style='grid-column: 1/-1; text-align:center; color:#999;'>Archive empty.</p>";
-            data.notes.forEach(note => {
-                const card = document.createElement('div');
-                card.className = 'note-card';
-                card.onclick = () => { document.getElementById('entry').value = note.content; document.getElementById('editor-section').scrollIntoView(); };
-                card.innerHTML = `<div class="note-date">${note.date}</div><div class="note-snippet">${note.content.substring(0, 80)}...</div>`;
-                container.appendChild(card);
+        function renderNotes(u) {
+            let data = JSON.parse(localStorage.getItem(u));
+            const list = document.getElementById('notes-list');
+            list.innerHTML = data.notes.length ? "" : "<p style='opacity:0.5'>No memories yet.</p>";
+            data.notes.forEach(n => {
+                let div = document.createElement('div');
+                div.className = 'note-item';
+                div.innerHTML = `<small>${n.date}</small><br>${n.text}`;
+                list.appendChild(div);
             });
         }
 
         function saveNote() {
-            const text = document.getElementById('entry').value;
-            if (!text) return notify("Write something first.");
-            let data = JSON.parse(localStorage.getItem(currentUser));
-            data.notes.unshift({ id: Date.now(), date: new Date().toLocaleString(), content: text });
-            localStorage.setItem(currentUser, JSON.stringify(data));
-            document.getElementById('entry').value = "";
-            refreshDashboard();
-            notify("Note archived.");
-        }
-
-        function aiInsight() {
-            const response = document.getElementById('ai-response');
-            let msg = `Chantel Jayda's AI sense greatness in your words, ${currentUser}.`;
-            response.innerText = ""; let i = 0;
-            const type = () => { if (i < msg.length) { response.innerText += msg.charAt(i); i++; setTimeout(type, 50); } };
-            type();
+            const u = document.getElementById('greet').innerText.split(', ')[1];
+            const text = document.getElementById('note-input').value;
+            if(!text) return;
+            let data = JSON.parse(localStorage.getItem(u));
+            data.notes.unshift({ text: text, date: new Date().toLocaleDateString() });
+            localStorage.setItem(u, JSON.stringify(data));
+            document.getElementById('note-input').value = "";
+            renderNotes(u);
         }
 
         function toggleMusic() {
-            const audio = document.getElementById('zen-audio');
-            const icon = document.getElementById('music-container');
-            if (audio.paused) { audio.play(); icon.classList.add('playing'); } 
-            else { audio.pause(); icon.classList.remove('playing'); }
+            const m = document.getElementById('bg-music');
+            const b = document.getElementById('music-btn');
+            if(m.paused) { m.play(); b.classList.add('playing'); }
+            else { m.pause(); b.classList.remove('playing'); }
         }
     </script>
 </body>
