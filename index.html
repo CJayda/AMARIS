@@ -3,72 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMARIS | Artistic Sanctuary</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
+    <title>AMARIS | Private Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --primary: #94a3b8; --accent: #475569; --ink: #1e293b; --glass: rgba(255, 255, 255, 0.9);
-            --strength-col: #ef4444;
-        }
-        .theme-male { --primary: #64748b; --accent: #334155; --ink: #0f172a; --glass: rgba(241, 245, 249, 0.94); }
-        .theme-female { --primary: #d4a373; --accent: #b5838d; --ink: #432818; --glass: rgba(255, 250, 250, 0.94); }
-        .theme-obsidian { --primary: #9ca3af; --accent: #f9fafb; --ink: #f8fafc; --glass: rgba(15, 23, 42, 0.94); }
-
-        /* ARTISTIC BACKGROUND ENGINE (Embedded Textures) */
-        body, html { 
-            margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; 
-            background-color: #0f172a;
-            overflow-x: hidden;
+            --primary: #475569; --accent: #1e293b; --glass: rgba(255, 255, 255, 0.95);
+            --text-dark: #000000; --strength-col: #ef4444;
         }
 
+        /* THEME OPTIMIZATION */
+        .theme-obsidian { 
+            --primary: #1e293b; --accent: #0f172a; 
+            --glass: rgba(220, 227, 235, 0.98); /* Light grey glass */
+            --text-dark: #020617; /* Solid ink black text */
+        }
+        .theme-male { --primary: #334155; --glass: rgba(241, 245, 249, 0.96); --text-dark: #0f172a; }
+        .theme-female { --primary: #b5838d; --glass: rgba(255, 245, 245, 0.96); --text-dark: #432818; }
+
+        body, html { margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; background-color: #0f172a; color: var(--text-dark); overflow-x: hidden; }
+        
         #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            /* Using a high-end artistic topographical pattern that is browser-safe */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg stroke='%3C#334155' stroke-width='66.7' stroke-opacity='0.15' %3E%3Ccircle fill='%230f172a' cx='0' cy='0' r='1800'/%3E%3Ccircle fill='%23131d33' cx='400' cy='400' r='1800'/%3E%3Ccircle fill='%2316223b' cx='800' cy='800' r='1800'/%3E%3Ccircle fill='%231a2844' cx='1200' cy='1200' r='1800'/%3E%3Ccircle fill='%231e2d4d' cx='1600' cy='1600' r='1800'/%3E%3C/g%3E%3C/svg%3E");
-            background-attachment: fixed;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cpattern id='p' width='50' height='50' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='25' cy='25' r='1' fill='%23ffffff' fill-opacity='0.2'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='url(%23p)'/%3E%3C/svg%3E");
             background-size: cover;
-            filter: brightness(0.7);
         }
 
         #auth-screen, #main-app { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
         #main-app { display: none; flex-direction: column; gap: 30px; }
 
         .glass-card { 
-            background: var(--glass); backdrop-filter: blur(25px); padding: 45px; border-radius: 45px; 
-            box-shadow: 0 50px 100px rgba(0,0,0,0.6); width: 100%; max-width: 460px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.25);
+            background: var(--glass); backdrop-filter: blur(25px); padding: 40px; border-radius: 35px; 
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5); width: 100%; max-width: 500px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
-        h1 { font-family: 'Playfair Display', serif; letter-spacing: 6px; color: var(--accent); margin: 0; text-transform: uppercase; font-size: 2.5rem; }
-        .tagline { font-size: 0.65rem; letter-spacing: 7px; text-transform: uppercase; opacity: 0.5; margin: 12px 0 35px; display: block; }
+        h1 { font-family: 'Playfair Display', serif; color: var(--text-dark); margin: 0; text-transform: uppercase; letter-spacing: 4px; }
+        .tagline { font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; margin: 10px 0 25px; display: block; color: var(--primary); font-weight: 700; }
 
-        /* Interactive Elements */
+        input, select, textarea { 
+            width: 100%; padding: 15px; margin: 10px 0; border: none; border-bottom: 2px solid var(--primary); 
+            background: rgba(0,0,0,0.03); color: var(--text-dark); outline: none; font-weight: 600;
+        }
+
+        button { 
+            padding: 14px 24px; border-radius: 10px; border: none; background: var(--accent); 
+            color: white; cursor: pointer; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;
+        }
+        button:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .note-item { 
+            background: var(--glass); padding: 30px; border-radius: 25px; margin-bottom: 20px; 
+            border-left: 10px solid var(--accent); text-align: left;
+        }
+        .note-item p { font-size: 1.1rem; line-height: 1.6; font-weight: 500; color: var(--text-dark); }
+        .media-preview { width: 100%; border-radius: 15px; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* PASSWORD TOOLS */
         .pass-container { position: relative; width: 100%; }
-        .peek-btn { position: absolute; right: 15px; top: 18px; cursor: pointer; font-size: 0.7rem; font-weight: 700; color: var(--primary); z-index: 10; opacity: 0.6; }
-        #strength-meter { height: 4px; width: 0%; background: var(--strength-col); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); margin-top: -10px; margin-bottom: 20px; border-radius: 2px; }
+        .peek-btn { position: absolute; right: 15px; top: 18px; cursor: pointer; font-size: 0.65rem; font-weight: 900; color: var(--text-dark); }
+        #strength-meter { height: 5px; width: 0%; transition: 0.5s; margin-top: -8px; margin-bottom: 15px; border-radius: 5px; }
 
-        /* Breathing Tool Overlay */
-        #breath-overlay { display: none; position: fixed; inset: 0; background: rgba(10, 15, 25, 0.98); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; color: white; }
-        .breath-circle { width: 130px; height: 130px; border: 2px solid var(--primary); border-radius: 50%; animation: breatheAction 8s infinite ease-in-out; }
-        @keyframes breatheAction { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(2.4); opacity: 1; border-width: 4px; } }
+        #breath-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 6, 23, 0.98); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; color: white; }
+        .breath-circle { width: 120px; height: 120px; border: 4px solid white; border-radius: 50%; animation: breathe 8s infinite ease-in-out; }
+        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(2.2); opacity: 1; } }
 
-        input, select, textarea { width: 100%; padding: 18px; margin: 12px 0; border: none; border-bottom: 2px solid var(--primary); background: transparent; color: var(--ink); outline: none; box-sizing: border-box; font-family: inherit; font-size: 1rem; }
-        button { padding: 14px 28px; border-radius: 50px; border: 1px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; font-weight: 700; transition: 0.3s ease; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; }
-        button:hover { background: var(--primary); color: white; transform: translateY(-2px); }
-
-        .no-print { display: inline-block; }
-        @media print { .no-print { display: none !important; } .glass-card { box-shadow: none; border: 1px solid #ddd; } }
+        @media print { .no-print { display: none !important; } }
     </style>
 </head>
-<body onload="setup()">
+<body onload="initApp()">
 
     <div id="bg-layer"></div>
 
     <div id="breath-overlay" onclick="this.style.display='none'">
         <div class="breath-circle"></div>
-        <h2 id="breath-status" style="margin-top:50px; letter-spacing:5px; font-weight: 300;">CENTERING...</h2>
-        <p style="opacity:0.4; font-size: 0.7rem; margin-top: 20px;">CLICK TO EXIT SANCTUARY</p>
+        <h2 id="breath-txt" style="margin-top:40px; letter-spacing:4px;">INHALING...</h2>
     </div>
 
     <div id="auth-screen">
@@ -76,152 +85,167 @@
             <h1>Amaris</h1>
             <span class="tagline">By Chantel Jayda</span>
             
-            <input type="text" id="username" placeholder="USERNAME" autocomplete="off">
+            <input type="text" id="user" placeholder="USERNAME" autocomplete="off">
             
             <div class="pass-container">
-                <input type="password" id="password" placeholder="PASSWORD" oninput="handleStrength(this.value)">
-                <span class="peek-btn" onclick="togglePass()">SHOW</span>
+                <input type="password" id="pass" placeholder="PASSWORD" oninput="checkPass(this.value)">
+                <span class="peek-btn" onclick="togglePeek()">PEEK</span>
             </div>
             <div id="strength-meter"></div>
             
-            <div id="extra-fields" style="display:none;">
-                <select id="user-aesthetic">
-                    <option value="" disabled selected>AESTHETIC PREFERENCE</option>
-                    <option value="male">GENTLEMAN </option>
-                    <option value="female">LADY</option>
+            <div id="reg-fields" style="display:none;">
+                <input type="text" id="hint" placeholder="PASSWORD HINT (e.g. My dog's name)">
+                <select id="aesthetic">
+                    <option value="" disabled selected>CHOOSE AESTHETIC</option>
                     <option value="obsidian">OBSIDIAN</option>
+                    <option value="male">GENTLEMAN</option>
+                    <option value="female">LADY</option>
                 </select>
             </div>
             
-            <button onclick="access()" id="action-btn" style="width:100%; margin-top: 10px;">Step Inside</button>
-            <p onclick="showRegistration()" style="cursor:pointer; font-size:0.75rem; margin-top:25px; color:var(--primary); letter-spacing: 1.5px;">ESTABLISH NEW PROFILE</p>
+            <button onclick="auth()" id="auth-btn" style="width:100%">Step Inside</button>
+            
+            <div id="forgot-link" style="margin-top: 20px;">
+                <p onclick="showHint()" style="cursor:pointer; font-size:0.7rem; color:var(--text-dark); font-weight:700;">FORGOT PASSWORD?</p>
+                <p onclick="toggleReg()" style="cursor:pointer; font-size:0.7rem; color:var(--text-dark); font-weight:700; margin-top:10px;">+ CREATE PROFILE</p>
+            </div>
         </div>
     </div>
 
     <div id="main-app">
-        <div class="glass-card" style="max-width:800px; text-align:left;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-                <h2 id="user-greet" style="font-family:'Playfair Display'; font-size: 2rem; margin: 0;">Sanctuary</h2>
+        <div class="glass-card" style="max-width:750px; text-align:left;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 id="welcome-msg" style="margin:0; font-family:'Playfair Display'; color: var(--text-dark);">Sanctuary</h2>
                 <div class="no-print">
-                    <button onclick="openBreathing()">🧘 BREATHE</button>
-                    <button onclick="window.print()">📄 EXPORT</button>
+                    <button onclick="document.getElementById('breath-overlay').style.display='flex'">🧘 BREATHE</button>
+                    <button onclick="window.print()" style="background:#475569;">📄 EXPORT</button>
                 </div>
             </div>
-            <p id="daily-thought" style="font-style:italic; opacity:0.8; margin:30px 0; border-left: 3px solid var(--primary); padding: 10px 0 10px 25px; font-size: 1.1rem; line-height: 1.6;"></p>
-            <textarea id="note-body" placeholder="Archive your reflections..."></textarea>
-            <button onclick="commitNote()" style="width:100%; background:var(--primary); color:white; margin-top:20px; border:none; height: 55px;">ARCHIVE MEMORY</button>
+            <textarea id="note-input" placeholder="What's your story today?" style="margin-top:20px;"></textarea>
+            <div style="display:flex; gap:10px;">
+                <button onclick="document.getElementById('media-input').click()" style="background:#94a3b8;">🖼️ ADD MEDIA</button>
+                <input type="file" id="media-input" hidden accept="image/*,video/*">
+                <button onclick="save()" style="flex-grow:1;">ARCHIVE</button>
+            </div>
+            <div id="status" style="font-size:0.75rem; font-weight:bold; margin-top:5px;"></div>
         </div>
-        <div id="memory-feed" style="width:100%; max-width:800px;"></div>
+        <div id="feed" style="width:100%; max-width:750px;"></div>
     </div>
 
     <script>
-        function setup() {
-            // Breathing Tool Loop
+        let currentMedia = null;
+
+        function initApp() {
             setInterval(() => {
-                const status = document.getElementById('breath-status');
-                status.innerText = status.innerText === "INHALING..." ? "EXHALING..." : "INHALING...";
+                const t = document.getElementById('breath-txt');
+                t.innerText = t.innerText === "INHALING..." ? "EXHALING..." : "INHALING...";
             }, 4000);
-
-            const inspirations = [
-                "Silence is the sleep that nourishes wisdom.",
-                "Your mind is a canvas. Paint it with peace.",
-                "In the rush of life, find your still point.",
-                "The soul always knows what to do to heal itself."
-            ];
-            document.getElementById('daily-thought').innerText = `"${inspirations[Math.floor(Math.random()*inspirations.length)]}"`;
         }
 
-        function openBreathing() {
-            document.getElementById('breath-overlay').style.display = 'flex';
-            document.getElementById('breath-status').innerText = "INHALING...";
+        function togglePeek() {
+            const p = document.getElementById('pass');
+            p.type = p.type === 'password' ? 'text' : 'password';
         }
 
-        function togglePass() {
-            const field = document.getElementById('password');
-            const btn = document.querySelector('.peek-btn');
-            field.type = field.type === 'password' ? 'text' : 'password';
-            btn.innerText = field.type === 'password' ? 'SHOW' : 'HIDE';
+        function checkPass(v) {
+            const m = document.getElementById('strength-meter');
+            let s = v.length * 10;
+            m.style.width = Math.min(s, 100) + "%";
+            m.style.background = s < 40 ? "#ef4444" : s < 70 ? "#eab308" : "#22c55e";
         }
 
-        function handleStrength(val) {
-            const meter = document.getElementById('strength-meter');
-            let score = val.length * 8;
-            if (/[A-Z]/.test(val)) score += 20;
-            if (/[0-9]/.test(val)) score += 20;
-            meter.style.width = Math.min(score, 100) + "%";
-            meter.style.background = score < 40 ? "#ef4444" : score < 70 ? "#eab308" : "#22c55e";
+        function toggleReg() {
+            document.getElementById('reg-fields').style.display = 'block';
+            document.getElementById('auth-btn').innerText = 'CREATE PROFILE';
         }
 
-        function showRegistration() {
-            document.getElementById('extra-fields').style.display = 'block';
-            document.getElementById('action-btn').innerText = 'CREATE PROFILE';
+        function showHint() {
+            const u = document.getElementById('user').value.toLowerCase().trim();
+            if(!u) return alert("Enter your username first");
+            const d = JSON.parse(localStorage.getItem(u));
+            if(d && d.h) alert("Your Hint: " + d.h); else alert("No hint found.");
         }
 
-        function access() {
-            const user = document.getElementById('username').value.toLowerCase().trim();
-            const pass = document.getElementById('password').value;
-            if(!user || !pass) return;
+        document.getElementById('media-input').onchange = e => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = () => {
+                currentMedia = { data: reader.result, type: file.type.startsWith('image') ? 'img' : 'video' };
+                document.getElementById('status').innerText = "✓ Media Ready";
+            };
+            reader.readAsDataURL(file);
+        };
 
-            if(document.getElementById('action-btn').innerText === 'STEP INSIDE') {
-                const stored = JSON.parse(localStorage.getItem(user));
-                if(stored && stored.pass === pass) enter(user, stored); else alert("Invalid Credentials");
+        function auth() {
+            const u = document.getElementById('user').value.toLowerCase().trim();
+            const p = document.getElementById('pass').value;
+            if(!u || !p) return;
+
+            if(document.getElementById('auth-btn').innerText === 'STEP INSIDE') {
+                const d = JSON.parse(localStorage.getItem(u));
+                if(d && d.p === p) launch(u, d); else alert("Access Denied");
             } else {
-                const style = document.getElementById('user-aesthetic').value;
-                if(!style) return alert("Select an aesthetic");
-                const data = { pass: pass, style: style, logs: [] };
-                localStorage.setItem(user, JSON.stringify(data));
-                enter(user, data);
+                const a = document.getElementById('aesthetic').value;
+                const h = document.getElementById('hint').value;
+                if(!a) return alert("Pick a theme");
+                const d = { p, a, h, n: [] };
+                localStorage.setItem(u, JSON.stringify(d));
+                launch(u, d);
             }
         }
 
-        function enter(name, data) {
-            document.body.className = 'theme-' + data.style;
+        function launch(u, d) {
+            document.body.className = 'theme-' + d.a;
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
-            document.getElementById('user-greet').innerText = "Sanctuary: " + name;
-            refreshFeed(name);
+            document.getElementById('welcome-msg').innerText = "Welcome, " + u;
+            render(u);
         }
 
-        function commitNote() {
-            const user = document.getElementById('user-greet').innerText.split(': ')[1];
-            const text = document.getElementById('note-body').value;
-            if(!text) return;
-            const data = JSON.parse(localStorage.getItem(user));
-            data.logs.unshift({ text, timestamp: new Date().toLocaleString(), id: Date.now() });
-            localStorage.setItem(user, JSON.stringify(data));
-            document.getElementById('note-body').value = "";
-            refreshFeed(user);
+        function save() {
+            const u = document.getElementById('welcome-msg').innerText.replace("Welcome, ", "");
+            const t = document.getElementById('note-input').value;
+            if(!t && !currentMedia) return;
+            const d = JSON.parse(localStorage.getItem(u));
+            d.n.unshift({ t, media: currentMedia, date: new Date().toLocaleString(), id: Date.now() });
+            localStorage.setItem(u, JSON.stringify(d));
+            currentMedia = null; document.getElementById('note-input').value = ""; 
+            document.getElementById('status').innerText = ""; render(u);
         }
 
-        function refreshFeed(user) {
-            const data = JSON.parse(localStorage.getItem(user));
-            const container = document.getElementById('memory-feed');
-            container.innerHTML = "";
-            data.logs.forEach(log => {
-                container.innerHTML += `
-                    <div class="glass-card" style="max-width:100%; text-align:left; margin-bottom:25px; padding:35px; border-left:8px solid var(--primary);">
-                        <div style="display:flex; justify-content:space-between; align-items:center; opacity:0.5; font-size:0.75rem; letter-spacing:1px;">
-                            <span>${log.timestamp}</span>
-                            <span class="no-print" onclick="wipeLog('${user}', ${log.id})" style="color:#ef4444; cursor:pointer; font-weight:bold;">ERASE</span>
+        function render(u) {
+            const d = JSON.parse(localStorage.getItem(u));
+            const f = document.getElementById('feed');
+            f.innerHTML = "";
+            d.n.forEach(note => {
+                let m = "";
+                if(note.media) {
+                    m = note.media.type === 'img' ? `<img src="${note.media.data}" class="media-preview">` : `<video controls src="${note.media.data}" class="media-preview"></video>`;
+                }
+                f.innerHTML += `
+                    <div class="note-item">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <small style="font-weight:700; opacity:0.6;">${note.date}</small>
+                            <span class="no-print" onclick="del('${u}', ${note.id})" style="color:#ef4444; cursor:pointer; font-weight:900; font-size:0.7rem;">DELETE</span>
                         </div>
-                        <p contenteditable="true" onblur="editLog('${user}', ${log.id}, this.innerText)" style="font-size:1.15rem; line-height:1.8; outline:none; margin-top:20px; font-weight: 300;">${log.text}</p>
+                        <p contenteditable="true" onblur="upd('${u}', ${note.id}, this.innerText)">${note.t}</p>
+                        ${m}
                     </div>`;
             });
         }
 
-        function editLog(user, id, newText) {
-            const data = JSON.parse(localStorage.getItem(user));
-            const target = data.logs.find(l => l.id === id);
-            target.text = newText;
-            localStorage.setItem(user, JSON.stringify(data));
+        function upd(u, id, text) {
+            const d = JSON.parse(localStorage.getItem(u));
+            d.n.find(x => x.id === id).t = text;
+            localStorage.setItem(u, JSON.stringify(d));
         }
 
-        function wipeLog(user, id) {
-            if(confirm("Permanently erase this memory?")) {
-                const data = JSON.parse(localStorage.getItem(user));
-                data.logs = data.logs.filter(l => l.id !== id);
-                localStorage.setItem(user, JSON.stringify(data));
-                refreshFeed(user);
+        function del(u, id) {
+            if(confirm("Permanently delete?")) {
+                const d = JSON.parse(localStorage.getItem(u));
+                d.n = d.n.filter(x => x.id !== id);
+                localStorage.setItem(u, JSON.stringify(d));
+                render(u);
             }
         }
     </script>
