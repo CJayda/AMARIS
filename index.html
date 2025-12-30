@@ -3,210 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMARIS by Chantel Jayda</title>
+    <title>AMARIS | Artistic Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,600&family=Inter:wght@200;400;500;600&display=swap" rel="stylesheet">
-
     <style>
         :root { 
-            --primary: #94a3b8; 
-            --accent: #475569;
-            --ink: #1e293b; 
-            --glass: rgba(255, 255, 255, 0.95);
-            --bg-url: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80');
+            --primary: #94a3b8; --accent: #475569; --ink: #1e293b; --glass: rgba(255, 255, 255, 0.9);
+            --strength-col: #ef4444;
+        }
+        .theme-male { --primary: #64748b; --accent: #334155; --ink: #0f172a; --glass: rgba(241, 245, 249, 0.94); }
+        .theme-female { --primary: #d4a373; --accent: #b5838d; --ink: #432818; --glass: rgba(255, 250, 250, 0.94); }
+        .theme-obsidian { --primary: #9ca3af; --accent: #f9fafb; --ink: #f8fafc; --glass: rgba(15, 23, 42, 0.94); }
+
+        /* ARTISTIC BACKGROUND ENGINE (Embedded Textures) */
+        body, html { 
+            margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; 
+            background-color: #0f172a;
+            overflow-x: hidden;
         }
 
-        /* NEW Gentleman Aesthetic: Soft Blue & Grey (Lighter) */
-        .theme-male {
-            --primary: #64748b; 
-            --accent: #334155;  
-            --ink: #1e293b;
-            --glass: rgba(241, 245, 249, 0.96);
+        #bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            /* Using a high-end artistic topographical pattern that is browser-safe */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg stroke='%3C#334155' stroke-width='66.7' stroke-opacity='0.15' %3E%3Ccircle fill='%230f172a' cx='0' cy='0' r='1800'/%3E%3Ccircle fill='%23131d33' cx='400' cy='400' r='1800'/%3E%3Ccircle fill='%2316223b' cx='800' cy='800' r='1800'/%3E%3Ccircle fill='%231a2844' cx='1200' cy='1200' r='1800'/%3E%3Ccircle fill='%231e2d4d' cx='1600' cy='1600' r='1800'/%3E%3C/g%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-size: cover;
+            filter: brightness(0.7);
         }
 
-        /* Lady Aesthetic: Silk & Champagne */
-        .theme-female {
-            --primary: #d4a373; 
-            --accent: #b5838d;  
-            --ink: #432818;
-            --glass: rgba(255, 250, 250, 0.96);
-        }
-
-        /* Obsidian: Minimalist Dark */
-        .theme-obsidian {
-            --primary: #9ca3af; 
-            --accent: #f9fafb;  
-            --ink: #f9fafb;
-            --glass: rgba(17, 24, 39, 0.9);
-        }
-
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; overflow: hidden; color: var(--ink); transition: 0.8s ease; }
-        
-        #bg-layer { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--bg-url) no-repeat center center/cover; 
-            z-index: -1; filter: brightness(0.7); transition: 1.5s;
-        }
-        
-        #notification-box {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            z-index: 1000; display: none; padding: 12px 25px;
-            background: var(--accent); color: white; border-radius: 50px; font-size: 0.85rem;
-        }
-
-        #auth-screen, #main-app { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        #main-app { display: none; flex-direction: column; overflow-y: auto; padding: 50px 0; }
+        #auth-screen, #main-app { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        #main-app { display: none; flex-direction: column; gap: 30px; }
 
         .glass-card { 
-            background: var(--glass); 
-            backdrop-filter: blur(20px); 
-            padding: 40px; border-radius: 35px; 
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
-            width: 90%; max-width: 450px; 
-            text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--glass); backdrop-filter: blur(25px); padding: 45px; border-radius: 45px; 
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6); width: 100%; max-width: 460px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.25);
         }
 
-        /* Expanded Dashboard Card */
-        .dashboard-card { max-width: 800px; text-align: left; }
+        h1 { font-family: 'Playfair Display', serif; letter-spacing: 6px; color: var(--accent); margin: 0; text-transform: uppercase; font-size: 2.5rem; }
+        .tagline { font-size: 0.65rem; letter-spacing: 7px; text-transform: uppercase; opacity: 0.5; margin: 12px 0 35px; display: block; }
 
-        h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin: 0; letter-spacing: 3px; color: var(--accent); }
-        .tagline { font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; opacity: 0.6; margin-bottom: 30px; }
+        /* Interactive Elements */
+        .pass-container { position: relative; width: 100%; }
+        .peek-btn { position: absolute; right: 15px; top: 18px; cursor: pointer; font-size: 0.7rem; font-weight: 700; color: var(--primary); z-index: 10; opacity: 0.6; }
+        #strength-meter { height: 4px; width: 0%; background: var(--strength-col); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); margin-top: -10px; margin-bottom: 20px; border-radius: 2px; }
 
-        input, select { 
-            width: 100%; padding: 15px; margin-bottom: 20px; border: none; 
-            border-bottom: 1px solid var(--primary); background: transparent; 
-            color: var(--ink); text-align: center; box-sizing: border-box; outline: none;
-        }
+        /* Breathing Tool Overlay */
+        #breath-overlay { display: none; position: fixed; inset: 0; background: rgba(10, 15, 25, 0.98); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; color: white; }
+        .breath-circle { width: 130px; height: 130px; border: 2px solid var(--primary); border-radius: 50%; animation: breatheAction 8s infinite ease-in-out; }
+        @keyframes breatheAction { 0%, 100% { transform: scale(1); opacity: 0.2; } 50% { transform: scale(2.4); opacity: 1; border-width: 4px; } }
 
-        button { 
-            width: 100%; padding: 15px; border-radius: 50px; border: 1px solid var(--primary); 
-            background: transparent; color: var(--primary); cursor: pointer; 
-            transition: 0.3s; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
-        }
-        button:hover { background: var(--primary); color: white; }
+        input, select, textarea { width: 100%; padding: 18px; margin: 12px 0; border: none; border-bottom: 2px solid var(--primary); background: transparent; color: var(--ink); outline: none; box-sizing: border-box; font-family: inherit; font-size: 1rem; }
+        button { padding: 14px 28px; border-radius: 50px; border: 1px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; font-weight: 700; transition: 0.3s ease; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; }
+        button:hover { background: var(--primary); color: white; transform: translateY(-2px); }
 
-        #music-btn {
-            position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
-            background: var(--glass); border-radius: 50%; display: flex; justify-content: center;
-            align-items: center; cursor: pointer; z-index: 100; border: 1px solid var(--primary);
-        }
-        .bar { width: 3px; height: 15px; background: var(--primary); margin: 0 2px; transition: 0.3s; }
-        .playing .bar { animation: wave 1s infinite alternate; }
-        @keyframes wave { from { height: 5px; } to { height: 20px; } }
-
-        .note-item { background: rgba(0,0,0,0.03); padding: 15px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--primary); }
-        textarea { width: 100%; height: 150px; background: transparent; border: 1px solid var(--primary); border-radius: 15px; padding: 15px; color: var(--ink); box-sizing: border-box; margin-top: 20px; }
+        .no-print { display: inline-block; }
+        @media print { .no-print { display: none !important; } .glass-card { box-shadow: none; border: 1px solid #ddd; } }
     </style>
 </head>
-<body>
+<body onload="setup()">
 
     <div id="bg-layer"></div>
-    <div id="notification-box"></div>
-    <audio id="bg-music" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
 
-    <div id="music-btn" onclick="toggleMusic()">
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div id="breath-overlay" onclick="this.style.display='none'">
+        <div class="breath-circle"></div>
+        <h2 id="breath-status" style="margin-top:50px; letter-spacing:5px; font-weight: 300;">CENTERING...</h2>
+        <p style="opacity:0.4; font-size: 0.7rem; margin-top: 20px;">CLICK TO EXIT SANCTUARY</p>
     </div>
 
     <div id="auth-screen">
         <div class="glass-card">
             <h1>Amaris</h1>
-            <div class="tagline">By Chantel Jayda</div>
+            <span class="tagline">By Chantel Jayda</span>
             
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
+            <input type="text" id="username" placeholder="USERNAME" autocomplete="off">
             
-            <div id="signup-fields" style="display: none;">
-                <select id="gender-select">
-                    <option value="" disabled selected>Aesthetic Preference</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="obsidian">Obsidian</option>
+            <div class="pass-container">
+                <input type="password" id="password" placeholder="PASSWORD" oninput="handleStrength(this.value)">
+                <span class="peek-btn" onclick="togglePass()">SHOW</span>
+            </div>
+            <div id="strength-meter"></div>
+            
+            <div id="extra-fields" style="display:none;">
+                <select id="user-aesthetic">
+                    <option value="" disabled selected>AESTHETIC PREFERENCE</option>
+                    <option value="male">GENTLEMAN </option>
+                    <option value="female">LADY</option>
+                    <option value="obsidian">OBSIDIAN</option>
                 </select>
             </div>
-
-            <button onclick="handleAuth()" id="main-btn">Step Inside</button>
-            <p style="font-size: 0.75rem; margin-top: 20px; cursor: pointer; color: var(--primary)" onclick="toggleMode()">Create a new sanctuary</p>
+            
+            <button onclick="access()" id="action-btn" style="width:100%; margin-top: 10px;">Step Inside</button>
+            <p onclick="showRegistration()" style="cursor:pointer; font-size:0.75rem; margin-top:25px; color:var(--primary); letter-spacing: 1.5px;">ESTABLISH NEW PROFILE</p>
         </div>
     </div>
 
     <div id="main-app">
-        <div class="glass-card dashboard-card">
-            <h1 id="greet">Welcome</h1>
-            <p class="tagline">Your Private Archive</p>
-            
-            <div id="notes-list" style="margin: 20px 0;"></div>
-            
-            <textarea id="note-input" placeholder="What's on your mind?"></textarea>
-            <button onclick="saveNote()" style="margin-top: 15px;">Archive Memory</button>
-            <button onclick="location.reload()" style="margin-top: 10px; border: none; font-size: 0.6rem; opacity: 0.5;">Logout</button>
+        <div class="glass-card" style="max-width:800px; text-align:left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                <h2 id="user-greet" style="font-family:'Playfair Display'; font-size: 2rem; margin: 0;">Sanctuary</h2>
+                <div class="no-print">
+                    <button onclick="openBreathing()">🧘 BREATHE</button>
+                    <button onclick="window.print()">📄 EXPORT</button>
+                </div>
+            </div>
+            <p id="daily-thought" style="font-style:italic; opacity:0.8; margin:30px 0; border-left: 3px solid var(--primary); padding: 10px 0 10px 25px; font-size: 1.1rem; line-height: 1.6;"></p>
+            <textarea id="note-body" placeholder="Archive your reflections..."></textarea>
+            <button onclick="commitNote()" style="width:100%; background:var(--primary); color:white; margin-top:20px; border:none; height: 55px;">ARCHIVE MEMORY</button>
         </div>
+        <div id="memory-feed" style="width:100%; max-width:800px;"></div>
     </div>
 
     <script>
-        let isLogin = true;
+        function setup() {
+            // Breathing Tool Loop
+            setInterval(() => {
+                const status = document.getElementById('breath-status');
+                status.innerText = status.innerText === "INHALING..." ? "EXHALING..." : "INHALING...";
+            }, 4000);
 
-        function toggleMode() {
-            isLogin = !isLogin;
-            document.getElementById('signup-fields').style.display = isLogin ? 'none' : 'block';
-            document.getElementById('main-btn').innerText = isLogin ? 'Step Inside' : 'Create Profile';
+            const inspirations = [
+                "Silence is the sleep that nourishes wisdom.",
+                "Your mind is a canvas. Paint it with peace.",
+                "In the rush of life, find your still point.",
+                "The soul always knows what to do to heal itself."
+            ];
+            document.getElementById('daily-thought').innerText = `"${inspirations[Math.floor(Math.random()*inspirations.length)]}"`;
         }
 
-        function handleAuth() {
-            const u = document.getElementById('username').value.toLowerCase();
-            const p = document.getElementById('password').value;
-            const g = document.getElementById('gender-select').value;
+        function openBreathing() {
+            document.getElementById('breath-overlay').style.display = 'flex';
+            document.getElementById('breath-status').innerText = "INHALING...";
+        }
 
-            if(!u || !p) return alert("Fill all fields");
+        function togglePass() {
+            const field = document.getElementById('password');
+            const btn = document.querySelector('.peek-btn');
+            field.type = field.type === 'password' ? 'text' : 'password';
+            btn.innerText = field.type === 'password' ? 'SHOW' : 'HIDE';
+        }
 
-            if(isLogin) {
-                let data = JSON.parse(localStorage.getItem(u));
-                if(data && data.pass === p) launch(u, data);
-                else alert("Invalid Login");
+        function handleStrength(val) {
+            const meter = document.getElementById('strength-meter');
+            let score = val.length * 8;
+            if (/[A-Z]/.test(val)) score += 20;
+            if (/[0-9]/.test(val)) score += 20;
+            meter.style.width = Math.min(score, 100) + "%";
+            meter.style.background = score < 40 ? "#ef4444" : score < 70 ? "#eab308" : "#22c55e";
+        }
+
+        function showRegistration() {
+            document.getElementById('extra-fields').style.display = 'block';
+            document.getElementById('action-btn').innerText = 'CREATE PROFILE';
+        }
+
+        function access() {
+            const user = document.getElementById('username').value.toLowerCase().trim();
+            const pass = document.getElementById('password').value;
+            if(!user || !pass) return;
+
+            if(document.getElementById('action-btn').innerText === 'STEP INSIDE') {
+                const stored = JSON.parse(localStorage.getItem(user));
+                if(stored && stored.pass === pass) enter(user, stored); else alert("Invalid Credentials");
             } else {
-                if(!g) return alert("Pick an aesthetic");
-                let data = { pass: p, gender: g, notes: [] };
-                localStorage.setItem(u, JSON.stringify(data));
-                launch(u, data);
+                const style = document.getElementById('user-aesthetic').value;
+                if(!style) return alert("Select an aesthetic");
+                const data = { pass: pass, style: style, logs: [] };
+                localStorage.setItem(user, JSON.stringify(data));
+                enter(user, data);
             }
         }
 
-        function launch(name, data) {
-            document.body.className = 'theme-' + data.gender;
+        function enter(name, data) {
+            document.body.className = 'theme-' + data.style;
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
-            document.getElementById('greet').innerText = "Welcome, " + name;
-            renderNotes(name);
+            document.getElementById('user-greet').innerText = "Sanctuary: " + name;
+            refreshFeed(name);
         }
 
-        function renderNotes(u) {
-            let data = JSON.parse(localStorage.getItem(u));
-            const list = document.getElementById('notes-list');
-            list.innerHTML = data.notes.length ? "" : "<p style='opacity:0.5'>No memories yet.</p>";
-            data.notes.forEach(n => {
-                let div = document.createElement('div');
-                div.className = 'note-item';
-                div.innerHTML = `<small>${n.date}</small><br>${n.text}`;
-                list.appendChild(div);
+        function commitNote() {
+            const user = document.getElementById('user-greet').innerText.split(': ')[1];
+            const text = document.getElementById('note-body').value;
+            if(!text) return;
+            const data = JSON.parse(localStorage.getItem(user));
+            data.logs.unshift({ text, timestamp: new Date().toLocaleString(), id: Date.now() });
+            localStorage.setItem(user, JSON.stringify(data));
+            document.getElementById('note-body').value = "";
+            refreshFeed(user);
+        }
+
+        function refreshFeed(user) {
+            const data = JSON.parse(localStorage.getItem(user));
+            const container = document.getElementById('memory-feed');
+            container.innerHTML = "";
+            data.logs.forEach(log => {
+                container.innerHTML += `
+                    <div class="glass-card" style="max-width:100%; text-align:left; margin-bottom:25px; padding:35px; border-left:8px solid var(--primary);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; opacity:0.5; font-size:0.75rem; letter-spacing:1px;">
+                            <span>${log.timestamp}</span>
+                            <span class="no-print" onclick="wipeLog('${user}', ${log.id})" style="color:#ef4444; cursor:pointer; font-weight:bold;">ERASE</span>
+                        </div>
+                        <p contenteditable="true" onblur="editLog('${user}', ${log.id}, this.innerText)" style="font-size:1.15rem; line-height:1.8; outline:none; margin-top:20px; font-weight: 300;">${log.text}</p>
+                    </div>`;
             });
         }
 
-        function saveNote() {
-            const u = document.getElementById('greet').innerText.split(', ')[1];
-            const text = document.getElementById('note-input').value;
-            if(!text) return;
-            let data = JSON.parse(localStorage.getItem(u));
-            data.notes.unshift({ text: text, date: new Date().toLocaleDateString() });
-            localStorage.setItem(u, JSON.stringify(data));
-            document.getElementById('note-input').value = "";
-            renderNotes(u);
+        function editLog(user, id, newText) {
+            const data = JSON.parse(localStorage.getItem(user));
+            const target = data.logs.find(l => l.id === id);
+            target.text = newText;
+            localStorage.setItem(user, JSON.stringify(data));
         }
 
-        function toggleMusic() {
-            const m = document.getElementById('bg-music');
-            const b = document.getElementById('music-btn');
-            if(m.paused) { m.play(); b.classList.add('playing'); }
-            else { m.pause(); b.classList.remove('playing'); }
+        function wipeLog(user, id) {
+            if(confirm("Permanently erase this memory?")) {
+                const data = JSON.parse(localStorage.getItem(user));
+                data.logs = data.logs.filter(l => l.id !== id);
+                localStorage.setItem(user, JSON.stringify(data));
+                refreshFeed(user);
+            }
         }
     </script>
 </body>
